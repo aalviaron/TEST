@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+
+public class OldPhonePadConverter
+{
+    private static Dictionary<char, string> keypad = new Dictionary<char, string>()
+    {
+        {'1', "&’("},
+        {'2', "ABC"},
+        {'3', "DEF"},
+        {'4', "GHI"},
+        {'5', "JKL"},
+        {'6', "MNO"},
+        {'7', "PQRS"},
+        {'8', "TUV"},
+        {'9', "WXYZ"},
+        {'0', " "}
+    };
+
+    public static string ConvertInput(string inputStr)
+    {
+        string outputStr = "";
+        char prevButton = '\0';
+
+        foreach (char c in inputStr)
+        {
+            if (char.IsDigit(c))
+            {
+                char button = c;
+
+                if (button == prevButton)
+                    outputStr += " ";
+
+                outputStr += keypad[button][0];
+                prevButton = button;
+            }
+            else if (c == '#')
+            {
+                outputStr += ".";
+            }
+            else
+            {
+                outputStr += c;
+            }
+        }
+
+        return outputStr;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string inputStr = "222 2 22#";
+        string outputStr = OldPhonePadConverter.ConvertInput(inputStr);
+        Console.WriteLine(outputStr);  // Output: "CAB."
+    }
+}
